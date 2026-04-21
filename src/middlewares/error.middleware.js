@@ -9,5 +9,15 @@
  * 3. Other errors → Use err.status (or 500) and err.message
  */
 export function errorHandler(err, req, res, next) {
-  // Your code here
+  let statusCode = err.status ?? 500;
+  let message = err.message;
+
+  if (err.name === "ValidationError") {
+    statusCode = 400;
+    message = err.message;
+  } else if (err.name === "CastError") {
+    statusCode = 400;
+    message = "Invalid id format";
+  }
+  return res.status(statusCode).json({ error: { message } });
 }
