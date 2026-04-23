@@ -35,13 +35,14 @@ const todoSchema = new mongoose.Schema(
     },
     tags: {
       type: [String],
-      validat: [arrayLimit],
+      validate: {
+        validator: arrayLimit,
+        message: "Cannot have more than 10 tags",
+      },
       default: [],
-      required: false,
     },
     dueDate: {
       type: Date,
-      required: false,
     },
   },
   {
@@ -62,7 +63,7 @@ function arrayLimit(val) {
 // });
 
 // TODO: Add index
-todoSchema.index({ complete: 1, createdAt: -1 });
+todoSchema.index({ completed: 1, createdAt: -1 });
 todoSchema.index({ title: 1, createdAt: -1 });
 
 // TODO: Create and export the Todo model
